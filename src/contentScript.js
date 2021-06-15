@@ -4,3 +4,5 @@ s.src = chrome.runtime.getURL('getElement.js');
 //    this.remove();
 //};
 (document.head || document.documentElement).appendChild(s);
+
+chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {hello: "world"})
