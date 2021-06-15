@@ -1,8 +1,15 @@
-var s = document.createElement('script');
-s.src = chrome.runtime.getURL('getElement.js');
-//s.onload = function() {
-//    this.remove();
-//};
-(document.head || document.documentElement).appendChild(s);
-
 chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {hello: "world"})
+
+document.addEventListener('contextmenu', e => {
+	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {
+		outerHTML: e.target.outerHTML,
+		path: e.path.map( x => {
+			return {
+				ID: x.id,
+				localName: x.localName
+			}
+		})
+	});
+	console.log(e)
+	console.log(e.path)
+});
