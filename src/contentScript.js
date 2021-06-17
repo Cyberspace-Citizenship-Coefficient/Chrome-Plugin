@@ -1,15 +1,13 @@
-chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {hello: "world"})
-
+// Listen for right clicks then send data on what was clicked
 document.addEventListener('contextmenu', e => {
+	// Send messages to ourself
 	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {
-		outerHTML: e.target.outerHTML,
+		outerHTML: e.target.outerHTML, // Grab the HTML
 		path: e.path.map( x => {
 			return {
-				ID: x.id,
-				localName: x.localName
+				ID: x.id, // HTML ID
+				localName: x.localName // This is a HTML type for some reason
 			}
-		})
+		}) // rebuild the array of how to find the element
 	});
-	console.log(e)
-	console.log(e.path)
 });
