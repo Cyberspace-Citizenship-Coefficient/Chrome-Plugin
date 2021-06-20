@@ -8,7 +8,7 @@
 	},
 	"icons": {
 		"128": "images/128_CCC_BLUE.png"
-	}
+	},
 	"permissions": [
 		"contextMenus",
 		"tabs",

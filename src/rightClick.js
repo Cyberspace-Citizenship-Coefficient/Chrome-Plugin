@@ -20,14 +20,25 @@ chrome.windows.onCreated.addListener(async () => {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	//handle context menu actions
 	//await chrome.browserAction.setIcon('images/128_CCC_BLUE.png')
-	console.log('CLICKED SOMETHING')
-	console.log(info)
-	console.log(tab)
-	console.log('LOAD')
-	const htmlElement = await chrome.storage.local.get(["htmlElement"]);
-	console.log(htmlElement)
-	// TODO: SEND THIS TO THE INFRACTION LOGGING API
-	//await chrome.browserAction.setIcon('images/128_CCC_GREEN.png')
+	const htmlElement = await chrome.storage.local.get(["htmlElement", "instanceID"], storage => {
+		const infraction = {
+			reporter: storage.instanceID,
+			url: info.pageUrl,
+			type: info.menuItemId,
+			content: storage.htmlElement
+		};
+		console.log(infraction)
+		// TODO: SEND THIS TO THE INFRACTION LOGGING API
+		//await fetch(`https://cyber-citizenship-coefficient.com/infraction`, 
+		//	{
+		//		body: JSON.stringify(infraction),
+		//		method: 'POST',
+		//		headers: {'Content-Type': 'application/json'}
+		//	}
+		//)
+
+		//await chrome.browserAction.setIcon('images/128_CCC_GREEN.png')
+	});
 })
 
 // Listen for the context script to tell us they right clicked on something
