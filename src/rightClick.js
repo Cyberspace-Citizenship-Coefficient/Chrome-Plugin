@@ -11,8 +11,8 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // Load available infractions when a window is opened
-chrome.windows.onCreated.addListener(async () => {
-	await mapMenus();
+chrome.windows.onCreated.addListener(() => {
+	mapMenus();
 });
 
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
