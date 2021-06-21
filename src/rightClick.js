@@ -2,11 +2,11 @@
 chrome.runtime.onInstalled.addListener(() => {
 	// TODO: GET INSTANCE ID FROM LAMBDA
 	chrome.storage.local.set({ instanceID: "xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx" });
-	//chrome.browserAction.setIcon({
-	//	path: {
-	//		"128": 'images/128_CCC_GREEN.png'
-	//	}
-	//})
+	chrome.action.setIcon({
+		path: {
+			"128": 'images/128_CCC_GREEN.png'
+		}
+	})
 	mapMenus();
 });
 
@@ -19,8 +19,12 @@ chrome.windows.onCreated.addListener(async () => {
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	//handle context menu actions
-	//await chrome.browserAction.setIcon('images/128_CCC_BLUE.png')
-	const htmlElement = await chrome.storage.local.get(["htmlElement", "instanceID"], storage => {
+	await chrome.action.setIcon({
+		path: {
+			"128": 'images/128_CCC_BLUE.png'
+		}
+	})
+	const htmlElement = await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
 			reporter: storage.instanceID,
 			url: info.pageUrl,
@@ -37,7 +41,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 		//	}
 		//)
 
-		//await chrome.browserAction.setIcon('images/128_CCC_GREEN.png')
+		await chrome.action.setIcon({
+			path: {
+				"128": 'images/128_CCC_GREEN.png'
+			}
+		})
 	});
 })
 
