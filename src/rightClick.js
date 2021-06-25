@@ -1,6 +1,6 @@
 // Register the Plugin when installed
 chrome.runtime.onInstalled.addListener(() => {
-	fetch("https://cyber-citizenship-coefficient.com/register")
+	fetch("https://cyber-citizenship-coefficient.com/dev/register")
 		.then(response => response.json())
 		.then(response => {
 			chrome.storage.local.set({ instanceID: response.body });
@@ -36,7 +36,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			content: storage.htmlElement
 		};
 		console.log(infraction)
-		await fetch(`https://cyber-citizenship-coefficient.com/infraction`, 
+		await fetch(`https://cyber-citizenship-coefficient.com/dev/infraction`, 
 			{
 				body: JSON.stringify(infraction),
 				method: 'POST',
@@ -60,7 +60,7 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
-	await fetch("https://cyber-citizenship-coefficient.com/load-infractions")
+	await fetch("https://cyber-citizenship-coefficient.com/dev/load-infractions")
 		.then(response => response.json())
 		.then(response => response.body)
 		.then(availableInfractions => {
