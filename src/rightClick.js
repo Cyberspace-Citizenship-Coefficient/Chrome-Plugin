@@ -1,6 +1,12 @@
 // Register the Plugin when installed
 chrome.runtime.onInstalled.addListener(() => {
-	fetch("https://cyber-citizenship-coefficient.com/dev/register")
+	fetch("https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/device",
+		{
+			body: JSON.stringify({}),
+			method: 'PUT',
+			headers: {'Content-Type': 'application/json'}
+		}
+	)
 		.then(response => response.json())
 		.then(response => {
 			chrome.storage.local.set({ instanceID: response.body });
@@ -22,12 +28,6 @@ chrome.windows.onCreated.addListener(() => {
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-	//handle context menu actions
-	await chrome.action.setIcon({
-		path: {
-			"128": 'images/128_CCC_BLUE.png'
-		}
-	})
 	const htmlElement = await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
 			reporter: storage.instanceID,
@@ -35,8 +35,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			type: info.menuItemId,
 			content: storage.htmlElement
 		};
-		console.log(infraction)
-		await fetch(`https://cyber-citizenship-coefficient.com/dev/infraction`, 
+		await fetch(`https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/infraction`, 
 			{
 				body: JSON.stringify(infraction),
 				method: 'POST',
@@ -60,7 +59,7 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
-	await fetch("https://cyber-citizenship-coefficient.com/dev/load-infractions")
+	await fetch("https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/load-infractions")
 		.then(response => response.json())
 		.then(response => response.body)
 		.then(availableInfractions => {
