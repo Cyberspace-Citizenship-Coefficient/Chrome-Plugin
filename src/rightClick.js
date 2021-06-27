@@ -14,7 +14,7 @@ chrome.windows.onCreated.addListener(() => {
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	//handle context menu actions
-	const htmlElement = await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
+	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
 			reporter: storage.instanceID,
 			url: info.pageUrl,
