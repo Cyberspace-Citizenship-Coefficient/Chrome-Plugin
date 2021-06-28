@@ -3,7 +3,7 @@ chrome.runtime.onInstalled.addListener(() => {
 	fetch("https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/device",
 		{
 			body: JSON.stringify({}),
-			method: 'PUT',
+			method: 'POST',
 			headers: {'Content-Type': 'application/json'}
 		}
 	)
