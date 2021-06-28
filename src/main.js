@@ -10,3 +10,10 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+// Load each part like this 
+try {
+  importScripts('siteQualityMapping.js');
+} catch (error) {
+  console.log(error);
+}
