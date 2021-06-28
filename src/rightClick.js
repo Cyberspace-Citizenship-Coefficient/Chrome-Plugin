@@ -1,6 +1,10 @@
+const baseURL = () => {
+	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
+}
+
 // Register the Plugin when installed
 chrome.runtime.onInstalled.addListener(() => {
-	fetch("https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/device",
+	fetch(`${baseURL()}/device`,
 		{
 			body: JSON.stringify({}),
 			method: 'POST',
@@ -36,7 +40,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			type: info.menuItemId,
 			content: storage.htmlElement
 		};
-		await fetch(`https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/infraction`, 
+		await fetch(`${baseURL()}/infraction`, 
 			{
 				body: JSON.stringify(infraction),
 				method: 'POST',
@@ -60,7 +64,7 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
-	await fetch("https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev/load-infractions")
+	await fetch(`${baseURL()}/load-infractions`)
 		.then(response => response.json())
 		.then(response => response.body)
 		.then(availableInfractions => {
@@ -74,4 +78,3 @@ const mapMenus = async () => {
 			})
 		}).catch(error => console.log('Error:', error));
 }
-
