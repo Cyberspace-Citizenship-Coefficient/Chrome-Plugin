@@ -58,30 +58,32 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 
 // TODO: Re-use FCN to map URL to ICON
 const checkURL = async (URL) => {
-	await chrome.storage.local.get(["blockedSites", "warnedSites"], async (storage) => {
-		// WE HAVE
-		// storage.blockedSites = [
-		//		'serebii.net',
-		//		'southwest.com'
-		//	]
-		// storage.warnedSites = [
-		//		'airbnb.com',
-		//		'purdue.edu',
-		//		'github.com'
-		//	]
-		
-		var icon = 'images/128_CCC_GREEN.png'
-		if (storage.warnedSites.some(x => URL.includes(x))) {
-			// SET ICON TO YELLOW
-			icon = 'images/128_CCC_YELLOW.png'
-		} else if (storage.blockedSites.some(x => URL.includes(x))) {
-			// SET ICON TO RED
-			icon = 'images/128_CCC_RED.png'
-		}
-		await chrome.action.setIcon({
-			path: {
-				"128": icon
+	if (typeof URL === "string") {
+		await chrome.storage.local.get(["blockedSites", "warnedSites"], async (storage) => {
+			// WE HAVE
+			// storage.blockedSites = [
+			//		'serebii.net',
+			//		'southwest.com'
+			//	]
+			// storage.warnedSites = [
+			//		'airbnb.com',
+			//		'purdue.edu',
+			//		'github.com'
+			//	]
+			
+			var icon = 'images/128_CCC_GREEN.png'
+			if (storage.warnedSites.some(x => URL.includes(x))) {
+				// SET ICON TO YELLOW
+				icon = 'images/128_CCC_YELLOW.png'
+			} else if (storage.blockedSites.some(x => URL.includes(x))) {
+				// SET ICON TO RED
+				icon = 'images/128_CCC_RED.png'
 			}
-		})
-	});
+			await chrome.action.setIcon({
+				path: {
+					"128": icon
+				}
+			})
+		});
+	}
 }
