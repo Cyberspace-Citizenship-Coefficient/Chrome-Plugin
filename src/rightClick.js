@@ -13,12 +13,7 @@ chrome.runtime.onInstalled.addListener(() => {
 	)
 		.then(response => response.json())
 		.then(response => {
-			chrome.storage.local.set({ instanceID: response.body });
-			chrome.action.setIcon({
-				path: {
-					"128": 'images/128_CCC_GREEN.png'
-				}
-			})
+			chrome.storage.local.set({ instanceID: response });
 			mapMenus();
 		}
 	).catch(error => console.log('Error:', error));
@@ -38,8 +33,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			reporter: storage.instanceID,
 			url: info.pageUrl,
 			type: info.menuItemId,
-			content: storage.htmlElement
+			content: JSON.stringify(storage.htmlElement)
 		};
+		console.log(infraction)
 		await fetch(`${baseURL()}/infraction`, 
 			{
 				body: JSON.stringify(infraction),
@@ -47,10 +43,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 				headers: {'Content-Type': 'application/json'}
 			}
 		)
+		.catch(error => console.log('Error:', error));
 
 		await chrome.action.setIcon({
 			path: {
-				"128": 'images/128_CCC_GREEN.png'
+				"128": 'images/128_CCC_YELLOW.png'
 			}
 		})
 	});
@@ -64,9 +61,8 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
-	await fetch(`${baseURL()}/load-infractions`)
+	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())
-		.then(response => response.body)
 		.then(availableInfractions => {
 			availableInfractions.forEach(infraction => {
 				chrome.contextMenus.create({
