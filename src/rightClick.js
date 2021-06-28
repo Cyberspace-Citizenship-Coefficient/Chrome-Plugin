@@ -33,9 +33,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			reporter: storage.instanceID,
 			url: info.pageUrl,
 			type: info.menuItemId,
-			content: JSON.stringify(storage.htmlElement)
+			content: storage.htmlElement
 		};
-		console.log(infraction)
 		await fetch(`${baseURL()}/infraction`, 
 			{
 				body: JSON.stringify(infraction),
