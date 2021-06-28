@@ -46,10 +46,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+	console.log('onUpdate');
 	await checkURL(tab.url.split('/')[2])
 })
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
+	console.log('onActivated');
 	setTimeout(async () => {
 		const tab = await chrome.tabs.get(activeInfo.tabId);
 		await checkURL(tab.url.split('/')[2])
