@@ -6,12 +6,10 @@ const getBlacklists = async () => {
 		body: {
 			blockedSites: [
 				'serebii.net',
-				'southwest.com'
 			], // things that cause red
 			warnedSites: [
 				'airbnb.com',
 				'purdue.edu',
-				'github.com'
 			] // things that cause yellow
 		}
 	}
@@ -46,7 +44,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-	console.log('onUpdate');
 	await checkURL(tab.url.split('/')[2])
 })
 
@@ -61,17 +58,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 // TODO: Re-use FCN to map URL to ICON
 const checkURL = async (URL) => {
 	await chrome.storage.local.get(["blockedSites", "warnedSites"], async (storage) => {
-		// WE HAVE
-		// storage.blockedSites = [
-		//		'serebii.net',
-		//		'southwest.com'
-		//	]
-		// storage.warnedSites = [
-		//		'airbnb.com',
-		//		'purdue.edu',
-		//		'github.com'
-		//	]
-		
+				
 		var icon = 'images/128_CCC_GREEN.png'
 		if (storage.warnedSites.some(x => URL.includes(x))) {
 			// SET ICON TO YELLOW
