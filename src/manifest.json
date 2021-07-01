@@ -17,7 +17,7 @@
 		"scripting"
 	],
 	"host_permissions":[
-		"https://www.serebii.net/"
+		"https://*/"
 	],
 	"content_scripts": [
 		{
