@@ -1,5 +1,5 @@
 const baseURL = () => {
-	return 'https://cyberspace-citizenship-coefficient.com/dev'
+	return 'https://cyberspace-citizenship-coefficient.com'
 }
 
 // Register the Plugin when installed
