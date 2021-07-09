@@ -4,13 +4,41 @@ const getBlacklists = async () => {
 	const responeFromLambda = {
 		statusCode: 200,
 		body: {
-			blockedSites: [
+			blockedSites: [ // things that cause red
 				'serebii.net',
-			], // things that cause red
-			warnedSites: [
+				'patimex.com',
+				'rudgwicksteamshow.co.uk',
+				'bellads.info',
+				'arngren.net',
+				'thebiguglywebsite.com/',
+				'theworldsworstwebsiteever.com/',
+				'roverp6cars.com/'
+
+			], 
+			warnedSites: [ //things that cause yellow
+				'regalcapitallenders.com/',  
+				'uat.edu/',
+				'nwokillers.weebly.com/',
+				'pnwx.com/',
+				'lingscars.com/',
+				'pennyjuice.com/',
+				'blinkee.com/',
+				'seals.com', 
+				'uglytub.com/',
+				'mrbottles.com/'
+			], 
+			goodSites: [
 				'airbnb.com',
 				'purdue.edu',
-			] // things that cause yellow
+				'vanderbilt.edu',
+				'slack.com',
+				'dropbox.com',
+				'carmax.com',
+				'healthline.com',
+				'marcjacobs.com/',
+				'skype.com',
+				'nest.com'
+			]
 		}
 	}
 
