@@ -2,6 +2,12 @@
 
 ## [Intercept the Requests](https://gist.github.com/JAStanton/3490cf799a0d184cedd7)
 
+intercept a request
+2. save the request url (localstorage, ......)
+3. in display.html, link a new script file (give it some name)
+4. the new script file needs an entry in manifest.json
+5. for each of the functions, read the url from storage and set it to the destination variable
+
 https://developer.chrome.com/docs/extensions/reference/action/
 
 https://stackoverflow.com/questions/5642603/how-can-i-get-the-element-that-was-right-clicked-via-a-google-chrome-context-men 
