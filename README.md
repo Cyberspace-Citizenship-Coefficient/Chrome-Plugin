@@ -8,10 +8,10 @@
     - [ ] The other two bring us to the desired page
 - [ ] Store the whitelist for all of time (?) and make sure we consult it 
 - [ ] Use a local cache 
-    - [ ] Store the temp whitelist for this session
-    - [ ] Store the red list for this session
-    - [ ] Store the yellow list for this session
-    - [ ] Store the green list for this session
+    - [ ] Store the temp whitelist (for this session)
+    - [ ] Store the red list (for this session)
+    - [ ] Store the yellow list (for this session)
+    - [ ] Store the green list (for this session)
 - [ ] Clear the local caches
     - Stretch ish, only needed for MVP
 - [ ] Hit the newest lambda to see if the sites are good, bad, or ugly 
