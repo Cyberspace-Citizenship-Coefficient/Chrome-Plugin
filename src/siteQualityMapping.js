@@ -99,6 +99,11 @@ const checkURL = async (URL) => {
 			path: {
 				"128": icon
 			}
-		})
-	});
+			await chrome.action.setIcon({
+				path: {
+					"128": icon
+				}
+			})
+		});
+	}
 }
