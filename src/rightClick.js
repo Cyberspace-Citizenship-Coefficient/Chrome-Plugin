@@ -1,7 +1,5 @@
 // Register the Plugin when installed
 chrome.runtime.onInstalled.addListener(() => {
-	// TODO: GET INSTANCE ID FROM LAMBDA
-	chrome.storage.local.set({ instanceID: "xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx" });
 	mapMenus();
 });
 
@@ -42,7 +40,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 // Listen for the context script to tell us they right clicked on something
 chrome.runtime.onMessage.addListener((message) => {
 	// Gotta store the clicking action
-	chrome.storage.local.set({ htmlElement: message });
+	if (message.action == "Right Click") {
+		chrome.storage.local.set({ htmlElement: message });
+	}
 });
 
 const mapMenus = async () => {

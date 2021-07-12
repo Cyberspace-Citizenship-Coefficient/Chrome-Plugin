@@ -8,6 +8,7 @@ document.addEventListener('contextmenu', e => {
 				ID: x.id, // HTML ID
 				localName: x.localName // This is a HTML type for some reason
 			}
-		}) // rebuild the array of how to find the element
+		}), // rebuild the array of how to find the element
+		action: "Right Click"
 	});
 });
