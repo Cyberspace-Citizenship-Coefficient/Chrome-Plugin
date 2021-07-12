@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +8,38 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gaudiamus-css@latest/css/gaudiamus.min.css">
 </head>
+
 <body class="bg-warning text-white">
     <div class="container m-t-5">
         <h1>Warning</h1>
-        <p>The site you are about to visit...</p>   
+        <p>The site you are about to visit...</p>
 
-        <button id="allow">allow</button>
+        <button id="Leave" onclick="leave()">leave</button>
+        <button id="Go" onclick="go()">go</button>
+        <button id="Always Go" onclick="alwaysgo()">alwaysgo</button>
+        <a href="http://google.com">go to google</a>
     </div>
-    
-    
+
+
 </body>
+<script>
+    function leave() {
+        let destination = "google.com"
+        window.href = destination
+    }
+
+    function go() {
+        let destination = "bing.com"
+        window.href = destination
+    }
+
+    function alwaysgo() {
+        let destination = "twitter.com"
+        window.href = destination
+    }
+
+
+
+</script>
+
 </html>
