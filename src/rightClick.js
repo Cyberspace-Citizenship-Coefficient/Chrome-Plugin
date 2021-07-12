@@ -2,7 +2,7 @@ const baseURL = () => {
 	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
 }
 
-// Register the Plugin when installed
+// Load available infractions when installed
 chrome.runtime.onInstalled.addListener(() => {
 	mapMenus();
 });
@@ -43,9 +43,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 // Listen for the context script to tell us they right clicked on something
 chrome.runtime.onMessage.addListener((message) => {
 	// Gotta store the clicking action
-	if (message.action == "Right Click") {
-		chrome.storage.local.set({ htmlElement: message });
-	}
+	chrome.storage.local.set({ htmlElement: message });
 });
 
 const mapMenus = async () => {

@@ -2,11 +2,24 @@
 
 ## [Intercept the Requests](https://gist.github.com/JAStanton/3490cf799a0d184cedd7)
 
-intercept a request
-2. save the request url (localstorage, ......)
-3. in display.html, link a new script file (give it some name)
-4. the new script file needs an entry in manifest.json
-5. for each of the functions, read the url from storage and set it to the destination variable
+### ToDo:
+- [ ] Get the buttons working 100%
+    - [ ] Go back brings us to the last loaded page
+    - [ ] The other two bring us to the desired page
+- [ ] Store the whitelist for all of time (?) and make sure we consult it 
+- [ ] Use a local cache 
+    - [ ] Store the temp whitelist for this session
+    - [ ] Store the red list for this session
+    - [ ] Store the yellow list for this session
+    - [ ] Store the green list for this session
+- [ ] Clear the local caches
+    - Stretch ish, only needed for MVP
+- [ ] Hit the newest lambda to see if the sites are good, bad, or ugly 
+    - Waiting for other work, just fake it for now
+
+### Notes:
+1) We want to keep the tab's history in tact so people can hit the back button after this runs
+
 
 https://developer.chrome.com/docs/extensions/reference/action/
 

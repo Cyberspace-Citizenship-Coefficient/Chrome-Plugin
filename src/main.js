@@ -1,4 +1,10 @@
 try {
+  importScripts('setup.js');
+} catch (error) {
+  console.log(error);
+}
+
+try {
   importScripts('requestinterceptor.js');
 } catch (error) {
   console.log(error);

@@ -1,12 +1,3 @@
-// Setup 
-chrome.runtime.onInstalled.addListener(async ()=>{
-    chrome.storage.local.set({ 
-        blackList: [],
-        whiteList: [],
-        
-    });
-});
-
 let processing = false;
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	// See that the tab is changing
@@ -20,18 +11,12 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         if (!processing && (storage.warnedSites.find(x => URL.includes(x)) || storage.blockedSites.find(x => URL.includes(x)))) {
             processing = true;
             // close target
+            // TODO: Save off the old page OR make this change what the tab loads
             chrome.tabs.remove(tabId)
             // create warning page
-            let opened = await chrome.tabs.create({url:'display.html?url='+URL, active: true})
+            let opened = await chrome.tabs.create({url:'display.html', active: true})
             console.log(opened);
             setTimeout(()=> processing = false, 50)
-
-            // chrome.scripting.executeScript({
-            //     target: {tabId: tabId}, function: ()=>{
-            //         console.log('on page?')
-            //         document.body.innerHTML = '<p>Warning</p>'
-            //     }
-            // });
         }
     })
 })
@@ -43,11 +28,23 @@ chrome.runtime.onMessage.addListener((message) => {
         console.log("LEAVE")
 	} else if (message.action == "go") {
         // Add to a temp whitelist so we don't annoy them
-        // go ahead to that page
-        console.log("GO")
+        await chrome.storage.local.get(["tempAllowedSites"], async (storage) => {
+            chrome.storage.local.set({ tempAllowedSites: storage.tempAllowedSites.push("THE SITE THEY ARE TRYING TO GO TO") });
+        })
+
+        // Go to the page
+        reloadOldPage()
     } else if (message.action == "always go") {
         // Add to a "permenant"" whitelist so we don't block this again
-        // go ahead to that page
-        console.log("ALWAYS GO")
+        await chrome.storage.local.get(["whiteListedSites"], async (storage) => {
+            chrome.storage.local.set({ whiteListedSites: storage.whiteListedSites.push("THE SITE THEY ARE TRYING TO GO TO") });
+        })
+
+        // Go to the page
+        reloadOldPage()
     }
 });
+
+const reloadOldPage = async () => {
+    console.log("LOAD THE PAGE THEY WANTED")
+}
