@@ -1,9 +1,14 @@
+function findParam(param){
+    const all = window.location.search;
+    const allParams = new URLSearchParams(all);
+    return allParams.get(param);
+}
 function leave()
 {
     chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch",
     {
-        action: "leave"
-        document.getElementById("leave").innerHtml = sessionStorage.getItem("$backwardurl")
+        action: "leave",
+        url: sessionStorage.before || 'https://google.com'
     });
 }
 
@@ -11,8 +16,8 @@ function go()
 {
     chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch",
     {
-        action: "go"
-        document.getElementById("go").innerHtml = sessionStorage.getItem("$forwardurl")
+        action: "go",
+        url: findParam('url')
     });
 }
 
@@ -20,8 +25,8 @@ function alwaysGo()
 {
     chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch",
     {
-        action: "always go"
-        document.getElementById("always go").innerHtml = sessionStorage.getItem("$forwardurl")
+        action: "always go",
+        url: findParam('url')
     });
 }
 

@@ -13,7 +13,8 @@
     - [ ] Store the yellow list (for this session)
     - [ ] Store the green list (for this session)
 - [ ] Clear the local caches
-    - Stretch ish, only needed for MVP
+    - Stretch ish, only needed for MVP  //this goal might not be necessary as once we close Chrome and open it up again then the local cache will be cleared
+    
 - [ ] Hit the newest lambda to see if the sites are good, bad, or ugly 
     - Waiting for other work, just fake it for now
 
