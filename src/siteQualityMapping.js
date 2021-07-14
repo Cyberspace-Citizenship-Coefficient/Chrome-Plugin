@@ -27,7 +27,7 @@ const getBlacklists = async () => {
 				'uglytub.com/',
 				'mrbottles.com/'
 			], 
-			goodSites: [
+			whiteListedSites: [
 				'airbnb.com',
 				'purdue.edu',
 				'vanderbilt.edu',
