@@ -2,10 +2,6 @@ let processing = false;
 
 // example listeners
 //listerners are like detectives waiting for a sound(event trigger) so they can do some action(listerner callback/event handler)
-// chrome.tabs.onUpdate.addListener(nossyDetectiveExecute)
-// chrome.button.onUpdate.addListener(nossyDetectiveExecute)
-// function nossyDetectiveExecute(tabId,changeInfo,tab){
-//     // ...sessionStorage.
 // }
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
@@ -25,9 +21,16 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (tab.status != "loading")
         return
 
-    await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites"], async (storage) => {
+    await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
         const isWhitelisted = storage.whiteListedSites.filter(x => x.includes(URL)).length > 0;
-        if (!processing && (storage.warnedSites.find(x => URL.includes(x)) || storage.blockedSites.find(x => URL.includes(x))) && !isWhitelisted) {
+        const isWarnedSite = storage.warnedSites.find(x => {
+            return URL.includes(x)
+        }) ?? false;
+        const isBlockedSite = storage.blockedSites.find(x => URL.includes(x)) ?? false;
+        const isTempAllowedSite = storage.tempAllowedSites.find(x => URL.includes(x)) ?? false;
+
+        debugger
+        if (!processing && (!isWhitelisted || !isTempAllowedSite ) && (isWarnedSite || isBlockedSite)) {
             console.log('interceptor for blocked and warnedsites triggered');
 
             processing = true;
@@ -45,30 +48,26 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 })
 
 
-
-function getTemporaryWhiteList() {
-    // return !white_listed.filter(x=> target.includes(x)).length;
-    // return sessionStorage.tempAllowedSites ? JSON.parse(sessionStorage.tempAllowedSites) : [];
-}
-
 chrome.runtime.onMessage.addListener(async (message) => {
     console.log("GOT A MESSAGE")
-        if (message.action == "leave") {
+    if (message.action == "leave") {
         debugger
         // leave the webpage
         console.log("LEAVE")
         // window.location.push(message.url)
+        chrome.storage.local.get(['blockedSites'], ({ blockedSites }) => {
+            blockedSites.push(message.url)
+            chrome.storage.local.set({ blockedSites })
+        })
         chrome.tabs.update(undefined, { url: message.url });
     } else if (message.action == "go") {
-        // const tempWhitelist = getTemporaryWhiteList();
-        // tempAllowedSites.push(message.url);
-        // sessionStorage.tempAllowedSites = JSON.stringify(tempWhitelist);
+
+
         // Add to a temp whitelist so we don't annoy them
-        //  chrome.storage.local.get(["tempAllowedSites"], async (storage) => {
-        
-        //     storage.tempAllowedSites.push(message.url)
-        //     chrome.storage.local.set({ tempAllowedSites: storage.tempAllowedSites });
-        // })
+        chrome.storage.local.get(["tempAllowedSites"], async (storage) => {
+            storage.tempAllowedSites.push(message.url) //remove https/ http and ?skip_inter
+            chrome.storage.local.set({ tempAllowedSites: storage.tempAllowedSites });
+        })
 
         // Go to the page
         // window.location.push(message.url)
@@ -76,20 +75,15 @@ chrome.runtime.onMessage.addListener(async (message) => {
         chrome.tabs.update(undefined, { url: message.url });
     } else if (message.action == "always go") {
         // Add to a "permenant"" whitelist so we don't block this again
-        // chrome.storage.local.get(["whiteListedSites"], async (storage) => {
-        //     storage.whiteListedSites.push(message.url)
-        //     chrome.storage.local.set({ whiteListedSites: storage.whiteListedSites });
-        // })
+        chrome.storage.local.get(["whiteListedSites"], async (storage) => { //retrieves whiteListedSites from local storage
+            storage.whiteListedSites.push(message.url)  //update the whiteListedSites with a new entry 
+            chrome.storage.local.set({ whiteListedSites: storage.whiteListedSites });  //saving whiteListedSites back into the database
+        })
 
-        // Go to the page
-        // window.location.push(message.url)
+
         chrome.tabs.update(undefined, { url: message.url });
     }
 });
-
-
-
-
 
 
 const reloadOldPage = async () => {

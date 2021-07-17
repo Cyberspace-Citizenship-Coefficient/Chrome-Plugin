@@ -3,18 +3,18 @@
 ## [Intercept the Requests](https://gist.github.com/JAStanton/3490cf799a0d184cedd7)
 
 ### ToDo:
-- [ ] Get the buttons working 100%
-    - [ ] Go back brings us to the last loaded page
-    - [ ] The other two bring us to the desired page
-- [ ] Store the whitelist for all of time (?) and make sure we consult it 
-- [ ] Use a local cache 
-    - [ ] Store the temp whitelist (for this session)
-    - [ ] Store the red list (for this session)
-    - [ ] Store the yellow list (for this session)
-    - [ ] Store the green list (for this session)
-- [ ] Clear the local caches
+- [ x ] Get the buttons working 100%
+    - [x] Go back brings us to the last loaded page
+    - [x] The other two bring us to the desired page
+- [ x ] Store the whitelist for all of time (?) and make sure we consult it 
+- [ x ] Use a local cache 
+    - [ x ] Store the temp whitelist (for this session)
+    - [ x ] Store the red/blockedSites list (for this session)
+    - [ x ] Store the yellow/warnedSites list (for this session)
+    - [ x ] Store the green/whiteListed Sites list (for this session)
+- [ x ] Clear the local caches
     - Stretch ish, only needed for MVP  //this goal might not be necessary as once we close Chrome and open it up again then the local cache will be cleared
-    
+
 - [ ] Hit the newest lambda to see if the sites are good, bad, or ugly 
     - Waiting for other work, just fake it for now
 
