@@ -2,21 +2,9 @@ const baseURL = () => {
 	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
 }
 
-// Register the Plugin when installed
+// Load available infractions when installed
 chrome.runtime.onInstalled.addListener(() => {
-	fetch(`${baseURL()}/device`,
-		{
-			body: JSON.stringify({}),
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'}
-		}
-	)
-		.then(response => response.json())
-		.then(response => {
-			chrome.storage.local.set({ instanceID: response });
-			mapMenus();
-		}
-	).catch(error => console.log('Error:', error));
+	mapMenus();
 });
 
 // Load available infractions when a window is opened
@@ -27,6 +15,7 @@ chrome.windows.onCreated.addListener(() => {
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+	debugger
 	//handle context menu actions
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
@@ -35,14 +24,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			type: info.menuItemId,
 			content: storage.htmlElement
 		};
-		await fetch(`${baseURL()}/infraction`, 
+		await fetch(`${baseURL()}/infraction`,
 			{
 				body: JSON.stringify(infraction),
 				method: 'POST',
-				headers: {'Content-Type': 'application/json'}
+				headers: { 'Content-Type': 'application/json' }
 			}
 		)
-		.catch(error => console.log('Error:', error));
+			.catch(error => console.log('Error:', error));
 
 		await chrome.action.setIcon({
 			path: {
@@ -50,6 +39,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			}
 		})
 	});
+
+	// debugger
+	// switch(info.menuItemId){
+	// 	case "reset_context":{
+	// 		sendResetMessage()
+	// 		break;
+	// 	}
+	// }
 })
 
 // Listen for the context script to tell us they right clicked on something
@@ -59,6 +56,7 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 const mapMenus = async () => {
+	debugger
 	await chrome.contextMenus.removeAll();
 	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())
@@ -72,4 +70,13 @@ const mapMenus = async () => {
 				})
 			})
 		}).catch(error => console.log('Error:', error));
+
+	// chrome.contextMenus.create({ id: 'reset_context', title: 'Reset siteMappings', contexts: ['all'], type: 'normal' }, (data) => {
+	// 	console.log("context reset creation result", data)
+	// })
+}
+
+function sendResetMessage() {
+	console.log('reset clicked and sending message')
+	chrome.runtime.sendMessage({ message: "reset_site_mappings" })
 }
