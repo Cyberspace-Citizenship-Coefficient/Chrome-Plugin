@@ -1,11 +1,10 @@
 function findParam(param){
-    const all = window.location.search;
-    const allParams = new URLSearchParams(all);  //allParams performs parsing function to find key parameters in line 5
+    const allParams = new URLSearchParams(window.location.search);  //allParams performs parsing function to find key parameters in line 5
     let response = allParams.get(param);  //response is now just the URL
     return response;
 }
 
-const onClick(act) => {
+const onClick = (act) => {
 	const dstURL = findParam('url');
 	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {
         action: act,
