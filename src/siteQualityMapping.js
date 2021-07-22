@@ -1,51 +1,3 @@
-const initializeSiteMappingsinStorage = async () => {  // void function that adds the list of sites to local storage
-	// Load blacklist and greylist from lambdas (Red and yellow status) 
-	// TEMP Harcode for testing
-	const responseFromLambda = {
-		statusCode: 200,
-		body: {
-			blockedSites: [ // things that cause red
-				'serebii.net',
-				'patimex.com',
-				'rudgwicksteamshow.co.uk',
-				'bellads.info',
-				'arngren.net',
-				'thebiguglywebsite.com',
-				'theworldsworstwebsiteever.com',
-				'roverp6cars.com/'
-
-			], 
-			warnedSites: [ //things that cause yellow
-				'regalcapitallenders.com',  
-				'uat.edu/',
-				'nwokillers.weebly.com',
-				'pnwx.com',
-				'lingscars.com',
-				'pennyjuice.com',
-				'blinkee.com',
-				'seals.com', 
-				'uglytub.com',
-				'mrbottles.com/'
-			], 
-			whiteListedSites: [
-				'airbnb.com',
-				'purdue.edu',
-				'vanderbilt.edu',
-				'slack.com',
-				'dropbox.com',
-				'carmax.com',
-				'healthline.com',
-				'marcjacobs.com',
-				'skype.com',
-				'nest.com'
-			]
-		}
-	}
-
-	// Storing the blocked and warned sites in the local plugin memory storage
-	chrome.storage.local.set({ ...responseFromLambda.body });  //using spread operator 
-}
-
 // Register the Plugin when installed
 chrome.runtime.onStartup.addListener(() => {  //want to get an updated list from lambda when the browser opens up
 	chrome.action.setIcon({
@@ -72,11 +24,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-	await checkURL(tab.url.split('/')[2])
+	if (tab.status === "complete") {
+		await checkURL(tab.url.split('/')[2])
+	}
 })
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
-	console.log('onActivated');
 	setTimeout(async () => {
 		const tab = await chrome.tabs.get(activeInfo.tabId);
 		await checkURL(tab.url.split('/')[2])

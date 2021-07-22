@@ -21,3 +21,16 @@ chrome.runtime.onInstalled.addListener(async ()=>{
         tempAllowedSites: []
     });
 });
+
+//https://developer.chrome.com/docs/extensions/reference/windows/#property-WINDOW_ID_NONE
+chrome.windows.onFocusChanged.addListener((windowID) => {
+	if (windowID == chrome.windows.WINDOW_ID_NONE) {
+		// Reset the memory when all windows are closed
+		chrome.storage.local.set({ 
+			redSites: [],
+			yellowSites: [],
+			greenSites: [],
+			tempAllowedSites: []
+		});
+	}
+});
