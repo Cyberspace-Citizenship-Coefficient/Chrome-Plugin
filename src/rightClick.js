@@ -15,7 +15,6 @@ chrome.windows.onCreated.addListener(() => {
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-	debugger
 	//handle context menu actions
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
@@ -39,14 +38,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			}
 		})
 	});
-
-	// debugger
-	// switch(info.menuItemId){
-	// 	case "reset_context":{
-	// 		sendResetMessage()
-	// 		break;
-	// 	}
-	// }
 })
 
 // Listen for the context script to tell us they right clicked on something
@@ -56,7 +47,6 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 const mapMenus = async () => {
-	debugger
 	await chrome.contextMenus.removeAll();
 	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())
@@ -70,13 +60,8 @@ const mapMenus = async () => {
 				})
 			})
 		}).catch(error => console.log('Error:', error));
-
-	// chrome.contextMenus.create({ id: 'reset_context', title: 'Reset siteMappings', contexts: ['all'], type: 'normal' }, (data) => {
-	// 	console.log("context reset creation result", data)
-	// })
 }
 
 function sendResetMessage() {
-	console.log('reset clicked and sending message')
 	chrome.runtime.sendMessage({ message: "reset_site_mappings" })
 }

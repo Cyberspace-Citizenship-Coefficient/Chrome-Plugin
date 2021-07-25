@@ -1,91 +1,82 @@
-let processing = false;
-
-// example listeners
-//listerners are like detectives waiting for a sound(event trigger) so they can do some action(listerner callback/event handler)
-// }
+const base_URL = () => {
+	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
+}
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-    // See that the tab is changing
-    // console.log(tabId)
-    // console.log(changeInfo)
-    // console.log(tab)
     const URL = tab.url.split('/')[2]
-    const protocol = tab.url.split('/')[0]  // can work with any protocol (e.g. https, http, ftp, ws etc.)
+
+	if (URL == 'afffkcmpebnikjnoagiiofainbpffnch') {
+		// it is us, skip
+		return;
+	}
 
     if (tab.url.includes('skip_interceptor')) {
-        debugger;
-        console.log("trigger interceptor skip");
         return;
     }
 
-    if (tab.status != "loading")
-        return
-
+    if (tab.status != "loading") {
+        return;
+	}
+	
     await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
-        const isWhitelisted = storage.whiteListedSites.filter(x => x.includes(URL)).length > 0;
-        const isWarnedSite = storage.warnedSites.find(x => {
-            return URL.includes(x)
-        }) ?? false;
-        const isBlockedSite = storage.blockedSites.find(x => URL.includes(x)) ?? false;
-        const isTempAllowedSite = storage.tempAllowedSites.find(x => URL.includes(x)) ?? false;
-
-        debugger
-        if (!processing && (!isWhitelisted || !isTempAllowedSite ) && (isWarnedSite || isBlockedSite)) {
-            console.log('interceptor for blocked and warnedsites triggered');
-
-            processing = true;
-            // close target
-            // TODO: Save off the old page OR make this change what the tab loads
-            chrome.tabs.remove(tabId)
-            // create warning page
-            let opened = await chrome.tabs.create({ url: 'display.html?url=' + protocol + '//' + URL, active: true })
-            console.log(opened);
-            setTimeout(() => processing = false, 50)
-        } else if (!processing) {
-            // sessionStorage.setItem('before', URL);
-        }
+        const isWhitelisted = storage.whiteListedSites.includes(URL);
+        const isWarnedSite = storage.warnedSites.includes(URL);
+        const isBlockedSite = storage.blockedSites.includes(URL);
+        const isTempAllowedSite = storage.tempAllowedSites.includes(URL);
+		
+		if (!isWhitelisted && !isTempAllowedSite) {
+			// Gotta do something with this
+			if (isWarnedSite || isBlockedSite) {
+				// Have seen this recently, and it is bad, send it to the Warning Page
+				await chrome.tabs.update(tabId, { url: 'display.html?url=' + tab.url, active: true })
+			} else {
+				// This is a new site, gotta check it 
+				let block = false;
+				let memory = 'unknown';
+				await fetch(`${base_URL()}/site-quality?site=${URL}`)
+					.then(response => response.json())
+					.then(siteRating => {
+						switch (siteRating.rating) {
+							case "good":
+								memory = 'greenSites';
+								break;
+							case "bad":
+								block = true;
+								memory = 'redSites';
+								break;
+							case "iffy":
+								block = true;
+								memory = 'yellowSites';
+								break;
+						}
+					}).catch(error => console.log('Error:', error));
+				if (block) {
+					await chrome.tabs.update(tabId, { url: 'display.html?url=' + tab.url, active: true })
+				}
+				if (memory !== 'unknown') {
+					chrome.storage.local.get([memory], async (storage) => {
+						storage[memory].push(URL)
+						chrome.storage.local.set({ ...storage });
+					})
+				}
+			}
+		}
     })
 })
 
-
 chrome.runtime.onMessage.addListener(async (message) => {
-    console.log("GOT A MESSAGE")
-    if (message.action == "leave") {
-        debugger
-        // leave the webpage
-        console.log("LEAVE")
-        // window.location.push(message.url)
-        chrome.storage.local.get(['blockedSites'], ({ blockedSites }) => {
-            blockedSites.push(message.url)
-            chrome.storage.local.set({ blockedSites })
-        })
-        chrome.tabs.update(undefined, { url: message.url });
-    } else if (message.action == "go") {
-
-
+	console.log(message)
+    if (message.action == "go") {
         // Add to a temp whitelist so we don't annoy them
         chrome.storage.local.get(["tempAllowedSites"], async (storage) => {
-            storage.tempAllowedSites.push(message.url) //remove https/ http and ?skip_inter
-            chrome.storage.local.set({ tempAllowedSites: storage.tempAllowedSites });
+            storage.tempAllowedSites.push(message.url)
+            chrome.storage.local.set({ ...storage });
         })
-
-        // Go to the page
-        // window.location.push(message.url)
-        console.log(message);
-        chrome.tabs.update(undefined, { url: message.url });
     } else if (message.action == "always go") {
-        // Add to a "permenant"" whitelist so we don't block this again
+        // Add to a "permanent" whitelist so we don't block this again
         chrome.storage.local.get(["whiteListedSites"], async (storage) => { //retrieves whiteListedSites from local storage
             storage.whiteListedSites.push(message.url)  //update the whiteListedSites with a new entry 
-            chrome.storage.local.set({ whiteListedSites: storage.whiteListedSites });  //saving whiteListedSites back into the database
+            chrome.storage.local.set({ ...storage });  //saving whiteListedSites back into the database
         })
-
-
-        chrome.tabs.update(undefined, { url: message.url });
     }
 });
-
-
-const reloadOldPage = async () => {
-    console.log("LOAD THE PAGE THEY WANTED")
-}
