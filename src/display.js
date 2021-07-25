@@ -11,7 +11,7 @@ const onClick = (act) => {
         url: dstURL.split('/')[2] 
     });
 	//setting flag so that the interceptor ignores this request
-	window.location.replace(dstURL + dstURL.includes("?") ? "&skip_interceptor" : "?skip_interceptor" )
+	window.location.replace(dstURL + (dstURL.includes("?") ? "&skip_interceptor" : "?skip_interceptor"))
 }
 
 window.onload = function(){

@@ -1,23 +1,28 @@
-const baseURL = () => {
+const base_URL = () => {
 	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
 }
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     const URL = tab.url.split('/')[2]
 
+	if (URL == 'afffkcmpebnikjnoagiiofainbpffnch') {
+		// it is us, skip
+		return;
+	}
+
     if (tab.url.includes('skip_interceptor')) {
         return;
     }
 
     if (tab.status != "loading") {
-        return
+        return;
 	}
 	
     await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
-        const isWhitelisted = storage.whiteListedSites.find(x => URL.includes(x)) ?? false;
-        const isWarnedSite = storage.warnedSites.find(x => URL.includes(x)) ?? false;
-        const isBlockedSite = storage.blockedSites.includes(x => URL.includes(x)) ?? false;
-        const isTempAllowedSite = storage.tempAllowedSites.includes(x => URL.includes(x)) ?? false;
+        const isWhitelisted = storage.whiteListedSites.includes(URL);
+        const isWarnedSite = storage.warnedSites.includes(URL);
+        const isBlockedSite = storage.blockedSites.includes(URL);
+        const isTempAllowedSite = storage.tempAllowedSites.includes(URL);
 		
 		if (!isWhitelisted && !isTempAllowedSite) {
 			// Gotta do something with this
@@ -28,12 +33,12 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 				// This is a new site, gotta check it 
 				let block = false;
 				let memory = 'unknown';
-				await fetch(`${baseURL()}/site-quality?site=${URL}`)
+				await fetch(`${base_URL()}/site-quality?site=${URL}`)
 					.then(response => response.json())
 					.then(siteRating => {
 						switch (siteRating.rating) {
 							case "good":
-								memory = 'redSites';
+								memory = 'greenSites';
 								break;
 							case "bad":
 								block = true;
@@ -41,7 +46,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 								break;
 							case "iffy":
 								block = true;
-								memory = 'redSites';
+								memory = 'yellowSites';
 								break;
 						}
 					}).catch(error => console.log('Error:', error));
@@ -60,6 +65,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 })
 
 chrome.runtime.onMessage.addListener(async (message) => {
+	console.log(message)
     if (message.action == "go") {
         // Add to a temp whitelist so we don't annoy them
         chrome.storage.local.get(["tempAllowedSites"], async (storage) => {
