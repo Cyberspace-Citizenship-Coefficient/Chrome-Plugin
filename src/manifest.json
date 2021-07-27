@@ -17,8 +17,7 @@
 		"scripting"
 	],
 	"host_permissions":[
-		"https://*/",
-		"http://*/"
+		"<all_urls>"
 	],
 	"content_scripts": [
 		{
