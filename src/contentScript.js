@@ -1,7 +1,7 @@
 // Listen for right clicks then send data on what was clicked
 document.addEventListener('contextmenu', e => {
 	// Send messages to ourself
-	chrome.runtime.sendMessage("GoingBack", {
+	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {
 		outerHTML: e.target.outerHTML, // Grab the HTML
 		path: e.path.map( x => {
 			return {
