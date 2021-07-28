@@ -1,7 +1,7 @@
 {
 	"name": "Cyber Citizenship Coefficient",
 	"description": "Build an Chrome Plugin Extension",
-	"version": "1.0",
+	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "main.js"
