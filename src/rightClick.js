@@ -1,7 +1,9 @@
-// Register the Plugin when installed
+const baseURL = () => {
+	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
+}
+
+// Load available infractions when installed
 chrome.runtime.onInstalled.addListener(() => {
-	// TODO: GET INSTANCE ID FROM LAMBDA
-	chrome.storage.local.set({ instanceID: "xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx" });
 	mapMenus();
 });
 
@@ -21,19 +23,18 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			type: info.menuItemId,
 			content: storage.htmlElement
 		};
-		console.log(infraction)
-		// TODO: SEND THIS TO THE INFRACTION LOGGING API
-		//await fetch(`https://cyber-citizenship-coefficient.com/infraction`, 
-		//	{
-		//		body: JSON.stringify(infraction),
-		//		method: 'POST',
-		//		headers: {'Content-Type': 'application/json'}
-		//	}
-		//)
+		await fetch(`${baseURL()}/infraction`,
+			{
+				body: JSON.stringify(infraction),
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' }
+			}
+		)
+			.catch(error => console.log('Error:', error));
 
 		await chrome.action.setIcon({
 			path: {
-				"128": 'images/128_CCC_GREEN.png'
+				"128": 'images/128_CCC_YELLOW.png'
 			}
 		})
 	});
@@ -47,23 +48,20 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
-	
-	// TODO: GET INFRACTIONS FROM LAMBDA
-	const availableInfractions = [{
-		title: "Report Ad with Audio",
-		id:  "AdWithAudio"
-	},{
-		title: "Report Paywall in middle of page",
-		id:  "PaywallInPage"
-	}]
-	
-	availableInfractions.forEach(infraction => {
-		chrome.contextMenus.create({
-			title: infraction.title,
-			type: 'normal',
-			id: infraction.id,
-			contexts: ['all']
-		});
-	})
+	await fetch(`${baseURL()}/infraction-types`)
+		.then(response => response.json())
+		.then(availableInfractions => {
+			availableInfractions.forEach(infraction => {
+				chrome.contextMenus.create({
+					title: infraction.title,
+					type: 'normal',
+					id: infraction.id,
+					contexts: ['all']
+				})
+			})
+		}).catch(error => console.log('Error:', error));
 }
 
+function sendResetMessage() {
+	chrome.runtime.sendMessage({ message: "reset_site_mappings" })
+}
