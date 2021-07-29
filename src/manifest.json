@@ -1,6 +1,6 @@
 {
 	"name": "Cyber Citizenship Coefficient",
-	"description": "Build an Chrome Plugin Extension",
+	"description": "Plugin used to report poor web development behavior and to avoid bad sites",
 	"version": "1.0.0",
 	"manifest_version": 3,
 	"background": {
