@@ -15,6 +15,8 @@ chrome.windows.onCreated.addListener(() => {
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+
+	console.log("context click",info.menuItemId)
 	//handle context menu actions
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
