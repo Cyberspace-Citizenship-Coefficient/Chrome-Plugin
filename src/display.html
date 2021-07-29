@@ -17,37 +17,54 @@
 				What would you like to do about 
 				<text id="site_url">IF THIS IS RENDERED WE ARE HAVING A BAD DAY</text><text>?</text>
 			</p>
-			<button id="DoNotVisitThisSite">Do Not Visit This Site And Return To Previous Site</button>
-			<br>
-			<button id="VisitAnyways">Visit This Site Anyways</button>
-			<br>
-			<button id="NeverBlockThisSite">Never Block This Site Again</button>
-			<br>
-			<button id="GoToGoogle">Go To Google</button>
-		</div>
+
+			<div class="intercet__actions">
+
+				<button id="DoNotVisitThisSite">Do Not Visit This Site And Return To Previous Site</button>
+				<br>
+				<button id="VisitAnyways">Visit This Site Anyways</button>
+				<br>
+				<button id="NeverBlockThisSite">Never Block This Site Again</button>
+				<br>
+				<button id="GoToGoogle">Go To Google</button>
+			</div>
+			</div>
     </body>
 	<style>
 		body {
 			background-image: url('./images/128_CCC_RED.png');
 			background-attachment: fixed;
 			text-align:center;
+			background-repeat: no-repeat;
 		}
-		div {
+		.container {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			align-items: center;
 			font-family:verdana;
-			font-size:3vw;
-			background-color: rgba(128, 128, 128, 0.5);
+			margin-top: 150px;
+			/* font-size:3vw; */
+			/* background-color: rgba(128, 128, 128, 0.5); */
 			font-weight: bold;
 		}
 		h1 {
-			font-size:5vw;
+			/* font-size:5vw; */
 			font-weight: bold;
 		}
 		button {
-			font-size:3vw;
-			background-color:red;
+			/* font-size:3vw; */
+			/* background-color:red; */
 		}
 		#site_url {
-			color:blue;
+			/* color:blue; */
+			text-decoration: underline;
+		}
+
+		.intercet__actions {
+			display: flex;
+			justify-content: center;
+			gap: 8px;
 		}
 	</style>
 </html>
