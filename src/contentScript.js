@@ -1,5 +1,5 @@
 document.addEventListener('contextmenu', e => {
-	// Send messages to ourself
+	// Send messages to main.js
 	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {
 		outerHTML: e.target.outerHTML, // Grab the HTML
 		path: e.path.map( x => {
