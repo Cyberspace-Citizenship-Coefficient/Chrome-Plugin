@@ -15,6 +15,14 @@ chrome.windows.onCreated.addListener(() => {
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+
+	if (info.menuItemId == "see_wall_of_shame"){
+		console.log("see_wall_of_shame clicked")
+		//open new tab with wall of shame url
+		chrome.tabs.create({url: "https://cyberspace-citizenship-coefficient.github.io/Wall-of-Shame/",active: true});
+		return ;
+	}
+	
 	//handle context menu actions
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
@@ -48,6 +56,13 @@ chrome.runtime.onMessage.addListener((message) => {
 
 const mapMenus = async () => {
 	await chrome.contextMenus.removeAll();
+
+	chrome.contextMenus.create({
+		title: "See Wall of Shame",
+		type: "normal",
+		id: 'see_wall_of_shame',
+		contexts: ['all']
+	})
 	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())
 		.then(availableInfractions => {
