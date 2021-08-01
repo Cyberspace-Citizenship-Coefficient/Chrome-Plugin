@@ -1,3 +1,4 @@
+// Get the URL of the service
 const baseURL = () => {
 	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
 }
@@ -12,17 +13,18 @@ chrome.windows.onCreated.addListener(() => {
 	mapMenus();
 });
 
-//https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-	//handle context menu actions
+	// Load the clicked element
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
+		// Create an infraction
 		const infraction = {
 			reporter: storage.instanceID,
 			url: info.pageUrl,
 			type: info.menuItemId,
 			content: storage.htmlElement
 		};
+		// Send it to the service
 		await fetch(`${baseURL()}/infraction`,
 			{
 				body: JSON.stringify(infraction),
@@ -31,7 +33,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			}
 		)
 			.catch(error => console.log('Error:', error));
-
+		// Set the icon to warning, it was set to blue in siteQualityMapping when we started reporting the infraction
 		await chrome.action.setIcon({
 			path: {
 				"128": 'images/128_CCC_YELLOW.png'
@@ -42,16 +44,20 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 // Listen for the context script to tell us they right clicked on something
 chrome.runtime.onMessage.addListener((message) => {
-	// Gotta store the clicking action
+	// Store the clicking action
 	chrome.storage.local.set({ htmlElement: message });
 });
 
+// Get the reportable infractions from the service
 const mapMenus = async () => {
+	// Clear the current setup
 	await chrome.contextMenus.removeAll();
+	// Get a list of all the things a user can report
 	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())
 		.then(availableInfractions => {
 			availableInfractions.forEach(infraction => {
+				// Add each reportable infraction to the context menu
 				chrome.contextMenus.create({
 					title: infraction.title,
 					type: 'normal',
@@ -60,8 +66,4 @@ const mapMenus = async () => {
 				})
 			})
 		}).catch(error => console.log('Error:', error));
-}
-
-function sendResetMessage() {
-	chrome.runtime.sendMessage({ message: "reset_site_mappings" })
 }
