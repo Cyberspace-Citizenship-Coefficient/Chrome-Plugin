@@ -1,3 +1,4 @@
+// Send to the plugin all elements that are right clicked on
 document.addEventListener('contextmenu', e => {
 	// Send messages to ourself
 	chrome.runtime.sendMessage("afffkcmpebnikjnoagiiofainbpffnch", {

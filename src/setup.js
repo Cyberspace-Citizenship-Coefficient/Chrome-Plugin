@@ -1,5 +1,6 @@
 // Setup 
-chrome.runtime.onInstalled.addListener(async ()=>{
+chrome.runtime.onInstalled.addListener(async () => {
+	// Register the decive
     fetch(`${baseURL()}/device`,
 		{
 			body: JSON.stringify({}),
@@ -9,23 +10,26 @@ chrome.runtime.onInstalled.addListener(async ()=>{
 	)
 		.then(response => response.json())
 		.then(response => {
+			// Store install ID so we can send it with infractions
 			chrome.storage.local.set({ instanceID: response });
 		}
 	).catch(error => console.log('Error:', error));
     
+	// Init memory
     chrome.storage.local.set({ 
         redSites: [],
         yellowSites: [],
         greenSites: [],
-        whiteListedSites: [],
+        whiteListedSites: [], // This is never reset
         tempAllowedSites: []
     });
 });
 
 //https://developer.chrome.com/docs/extensions/reference/windows/#property-WINDOW_ID_NONE
+// Clear session memory when all windows are closed 
 chrome.windows.onFocusChanged.addListener((windowID) => {
 	if (windowID == chrome.windows.WINDOW_ID_NONE) {
-		// Reset the memory when all windows are closed
+		// Reset the session memory when all windows are closed
 		chrome.storage.local.set({ 
 			redSites: [],
 			yellowSites: [],
