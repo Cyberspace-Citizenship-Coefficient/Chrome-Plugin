@@ -1,6 +1,6 @@
 // Get the URL of the service
 const baseURL = () => {
-	return 'https://439r656kxf.execute-api.us-east-2.amazonaws.com/dev'
+	return 'https://cyberspace-citizenship-coefficient.com'
 }
 
 // Load available infractions when installed
