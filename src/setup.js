@@ -18,7 +18,8 @@ chrome.runtime.onInstalled.addListener(async ()=>{
         yellowSites: [],
         greenSites: [],
         whiteListedSites: [],
-        tempAllowedSites: []
+        tempAllowedSites: [],
+		dont_show_again_preference: false
     });
 });
 
