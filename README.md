@@ -68,3 +68,20 @@ This is the script that makes the [display.html](./display.html) function.
 	
 ## An infraction is reported
 [rightClick.js](./src/rightClick.js) sends the infraction to the service for validation, then marks the site as yellow
+
+## User manual 
+
+This extension allows a web user to submit a website as having infraction: 1 plays ad when page is loaded and 2. missing https protocol.
+This infraction report is queued and manually verified and then included into a blocked and wall of shame list
+
+
+## How to view wall of shame
+1. Users may visit the wall of shame link by right clicking and then clicking on the wall of shame shame option in the context menus to view the [wall of shame](https://cyberspace-citizenship-coefficient.github.io/Wall-of-Shame/)
+
+### How to submit *Report ad with audio*
+1. right click to open the chrome context menu then click on the *Report ad with audio*, this will show you pop up when the submission is completed
+
+
+### How to submit *Site uses HTTP NOT HTTPS*
+1. right click to open the chrome context menu then click on the *Site uses HTTP NOT HTTPS*, this will show you pop up when the submission is completed
+
