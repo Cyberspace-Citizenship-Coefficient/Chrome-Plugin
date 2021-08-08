@@ -1,0 +1,48 @@
+/* .ccc_popup_frame {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    background-color: rgb(169, 169, 197);
+} */
+
+
+.ccc_popup_card {
+    /* height: 400px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow:2px 2px 7px 1px grey; */
+}
+
+.ccc_popup__title {
+    /* height: 20%;
+    color: black;
+    border-bottom: 1px solid red;
+    text-align: start;
+    padding: 10px; */
+}
+
+.ccc_popup__body{
+    height: 80%;
+    padding: 10px;
+}
+.ccc_popup_actions {
+    /* height: 20%;
+    border-top: 1px solid red;
+    padding:10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px; */
+    
+}
+
+.ccc_popup_actions > button {
+    /* padding: 10px 40px;
+    border-radius: 5px; */
+}
