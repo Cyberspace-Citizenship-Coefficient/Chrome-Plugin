@@ -17,7 +17,7 @@ It also initalizes the memory for the plugin.
 ## Infraction Reporting Scripts
 
 ### [contentScript.js](./src/contentScript.js)
-This file is loaded as a background workjer on all web pages. 
+This file is loaded as a background worker on all web pages. 
 It is used to tell the remainder of the plugin what element was most recently right clicked on. 
 It has access to the DOM, but none of the internal information on the website. 
 
