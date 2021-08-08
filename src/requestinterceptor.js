@@ -19,10 +19,10 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	}
 	
     await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
-        const isWhitelisted = storage.whiteListedSites.includes(URL);
-        const isWarnedSite = storage.warnedSites.includes(URL);
-        const isBlockedSite = storage.blockedSites.includes(URL);
-        const isTempAllowedSite = storage.tempAllowedSites.includes(URL);
+        const isWhitelisted =( storage.whiteListedSites?? []).includes(URL);
+        const isWarnedSite = (storage.warnedSites?? []).includes(URL);
+        const isBlockedSite = (storage.blockedSites?? []).includes(URL);
+        const isTempAllowedSite = (storage.tempAllowedSites?? []).includes(URL); 
 		
 		if (!isWhitelisted && !isTempAllowedSite) {
 			// Gotta do something with this
@@ -33,6 +33,8 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 				// This is a new site, gotta check it 
 				let block = false;
 				let memory = 'unknown';
+
+				
 				await fetch(`${base_URL()}/site-quality?site=${URL}`)
 					.then(response => response.json())
 					.then(siteRating => {
