@@ -5,6 +5,8 @@ chrome.runtime.onStartup.addListener(() => {  //want to get an updated list from
 			"128": 'images/128_CCC_GREEN.png'
 		}
 	})
+
+	
 });
 
 //https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
