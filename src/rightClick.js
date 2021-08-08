@@ -16,13 +16,13 @@ chrome.windows.onCreated.addListener(() => {
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
-	if (info.menuItemId == "see_wall_of_shame"){
+	if (info.menuItemId == "see_wall_of_shame") {
 		console.log("see_wall_of_shame clicked")
 		//open new tab with wall of shame url
-		chrome.tabs.create({url: "https://cyberspace-citizenship-coefficient.github.io/Wall-of-Shame/",active: true});
-		return ;
+		chrome.tabs.create({ url: "https://cyberspace-citizenship-coefficient.github.io/Wall-of-Shame/", active: true });
+		return;
 	}
-	
+
 	//handle context menu actions
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		const infraction = {
@@ -37,8 +37,29 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' }
 			}
-		)
-			.catch(error => console.log('Error:', error));
+		).then(res => {
+			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+				
+				chrome.storage.local.get(['dont_show_again_preference'], (storage) => {
+					
+					let message_obj = {
+						message: "Thank you for your submission. We will process and add it to the infractions wall of shame in a few days. Click on the wall of shame context menu item later to see your enty",
+						dont_show_again_preference: storage.dont_show_again_preference
+					}
+					chrome.tabs.sendMessage(tabs[0].id, message_obj, function (response) {
+						console.log(response.farewell);
+					});
+				})
+			});
+		})
+			.catch(error => {
+				console.log('Error:', error)
+				chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+					chrome.tabs.sendMessage(tabs[0].id, { message: "Failed to post your infraction. Our sysems might be experiencing some technical issues" }, function (response) {
+						console.log(response.farewell);
+					});
+				});
+			});
 
 		await chrome.action.setIcon({
 			path: {
