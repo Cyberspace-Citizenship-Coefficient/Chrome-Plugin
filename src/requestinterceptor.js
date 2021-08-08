@@ -22,11 +22,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     }
 	
 	// Get the information on what we should and should not block
-    await chrome.storage.local.get(["blockedSites", "warnedSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
+    await chrome.storage.local.get(["redSites", "yellowSites", "whiteListedSites","tempAllowedSites"], async (storage) => {
 		// Check if we know about this site
         const isWhitelisted = storage.whiteListedSites.includes(URL);
-        const isWarnedSite = storage.warnedSites.includes(URL);
-        const isBlockedSite = storage.blockedSites.includes(URL);
+        const isWarnedSite = storage.yellowSites.includes(URL);
+        const isBlockedSite = storage.redSites.includes(URL);
         const isTempAllowedSite = storage.tempAllowedSites.includes(URL);
 		
 		// Check if the site may need to be blocked
