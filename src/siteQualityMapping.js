@@ -1,5 +1,5 @@
-// Register the Plugin when installed
-chrome.runtime.onStartup.addListener(() => {  //want to get an updated list from lambda when the browser opens up
+// Startup set the icon to green
+chrome.runtime.onStartup.addListener(() => {  
 	chrome.action.setIcon({
 		path: {
 			"128": 'images/128_CCC_GREEN.png'
@@ -9,10 +9,8 @@ chrome.runtime.onStartup.addListener(() => {  //want to get an updated list from
 	
 });
 
-//https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/#state
-// Listen for when we are clicked 
+// Set the icon to blue when we are sending an infraction to show progress of the report
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-	//handle context menu actions
 	await chrome.action.setIcon({
 		path: {
 			"128": 'images/128_CCC_BLUE.png'
@@ -20,13 +18,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 	})
 })
 
-
+// Check the quality of a site that we allowed to fully load
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	if (tab.status === "complete") {
 		await checkURL(tab.url.split('/')[2])
 	}
 })
 
+// Check the quality of a tabs when you swap between them
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
 	setTimeout(async () => {
 		const tab = await chrome.tabs.get(activeInfo.tabId);
@@ -34,8 +33,9 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 	}, 100)
 })
 
-// TODO: Re-use FCN to map URL to ICON
+// Check if a URL is a bad actor
 const checkURL = async (URL) => {
+	// Load memory
 	await chrome.storage.local.get(["redSites", "yellowSites", "whiteListedSites"], async (storage) => {		
 		var icon = 'images/128_CCC_GREEN.png'
 		const whiteListed = storage.whiteListedSites.includes(URL)  //checking if current URL is whitelisted
@@ -53,13 +53,3 @@ const checkURL = async (URL) => {
 		})
 	});
 }
-
-chrome.runtime.onMessage.addListener(async (msg)=>{
-	switch(msg){
-		case 'reset_site_mappings':{
-			initializeSiteMappingsinStorage();
-			console.log('mappings have been reset, check console watcher')
-			break;
-		}
-	}
-})
