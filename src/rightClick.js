@@ -44,7 +44,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 				chrome.storage.local.get(['dont_show_again_preference'], (storage) => {
 					
 					let message_obj = {
-						message: "Thank you for your submission. We will process and add it to the infractions wall of shame in a few days. Click on the wall of shame context menu item later to see your enty",
+						message: "Thank you for your submission. We will process it and update the wall of shame soon. Click on the wall of shame context menu item later to see the site's new score",
 						dont_show_again_preference: storage.dont_show_again_preference
 					}
 					chrome.tabs.sendMessage(tabs[0].id, message_obj, function (response) {
