@@ -63,11 +63,11 @@ function setupDismissalListeners(){
 }
 function dismissPopup(dont_show_again) {
 	ejectPopup();
-	sendDismissalPreference({ dont_show_again })
+	sendDismissalPreference( dont_show_again )
 }
 
 
-function sendDismissalPreference({ dont_show_again = false }) {
+function sendDismissalPreference( dont_show_again = false ) {
 	chrome.runtime.sendMessage({ message: "dont_show_again_preference", value: dont_show_again })
 }
 

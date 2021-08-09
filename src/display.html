@@ -1,74 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-        <script src="display.js"></script>
-		<!-- <link rel="stylesheet" href="./popup_frame.css"> -->
-    
-    </head>
-    <body>
-		<div class="container m-t-5">
-			<h1>Warning</h1>
-			<p>
-				The site you are about to visit is know to be a poor citizen of cyberspace.
-				<br>
-				What would you like to do about 
-				<text id="site_url">IF THIS IS RENDERED WE ARE HAVING A BAD DAY</text><text>?</text>
-			</p>
 
-			<div class="intercet__actions">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="display.js"></script>
 
-				<button id="DoNotVisitThisSite">Do Not Visit This Site And Return To Previous Site</button>
-				<br>
-				<button id="VisitAnyways">Visit This Site Anyways</button>
-				<br>
-				<button id="NeverBlockThisSite">Never Block This Site Again</button>
-				<br>
-				<button id="GoToGoogle">Go To Google</button>
-			</div>
-			</div>
+</head>
+
+<body>
+	<div class="container m-t-5">
+		<h1>Warning</h1>
+		<p>
+			The site you are about to visit is know to be a poor citizen of cyberspace.
+			<br>
+			What would you like to do about
+			<text id="site_url">IF THIS IS RENDERED WE ARE HAVING A BAD DAY</text><text>?</text>
+		</p>
+
+		<div class="intercet__actions">
+
+			<button id="DoNotVisitThisSite">Do Not Visit This Site And Return To Previous Site</button>
+			<br>
+			<button id="VisitAnyways">Visit This Site Anyways</button>
+			<br>
+			<button id="NeverBlockThisSite">Never Block This Site Again</button>
+			<br>
+			<button id="GoToGoogle">Go To Google</button>
+		</div>
+	</div>
+
+</body>
+<style>
+	body {
+		background-image: url('./images/128_CCC_RED.png');
+		background-attachment: fixed;
+		text-align: center;
+		background-repeat: no-repeat;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		font-family: verdana;
+		margin-top: 150px;
+		font-weight: bold;
+	}
+
+	h1 {
+		font-weight: bold;
+	}
 
 
-		
-    </body>
-	<style>
-		body {
-			background-image: url('./images/128_CCC_RED.png');
-			background-attachment: fixed;
-			text-align:center;
-			background-repeat: no-repeat;
-		}
-		.container {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-around;
-			align-items: center;
-			font-family:verdana;
-			margin-top: 150px;
-			/* font-size:3vw; */
-			/* background-color: rgba(128, 128, 128, 0.5); */
-			font-weight: bold;
-		}
-		h1 {
-			/* font-size:5vw; */
-			font-weight: bold;
-		}
-		button {
-			/* font-size:3vw; */
-			/* background-color:red; */
-		}
-		#site_url {
-			/* color:blue; */
-			text-decoration: underline;
-		}
+	#site_url {
+		text-decoration: underline;
+	}
 
-		.intercet__actions {
-			display: flex;
-			justify-content: center;
-			gap: 8px;
-		}
-	</style>
+	.intercet__actions {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+	}
+</style>
+
 </html>
