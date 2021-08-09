@@ -1,9 +1,6 @@
 chrome.runtime.onMessage.addListener(
 	function (request, sender, sendResponse) {
-		console.log(sender.tab ?
-			"from a content script:" + sender.tab.url :
-			"from the extension");
-
+		
 		// alert(request.message);
 		if (!!request.dont_show_again_preference && request.dont_show_again_preference){ 
 			return ;
