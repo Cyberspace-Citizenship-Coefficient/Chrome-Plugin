@@ -25,6 +25,9 @@ It has access to the DOM, but none of the internal information on the website.
 Maps the menu buttons based on what the service tells it can be reported.
 Sends infractions to the service.
 
+### [dismisal_preference.js](./src/dismisal_preference.js)
+This is the script that is used to show feedback popup when a user makes an infraction submission 
+
 ## Blocking of Bad Sites
 
 ### [siteQualityMapping.js](./src/siteQualityMapping.js)
@@ -39,6 +42,8 @@ This is the web page that is shown to block users from loading bad actors.
 
 ### [display.js](./src/display.js)
 This is the script that makes the [display.html](./display.html) function. 
+
+
 
 # Workflow
 ## Install
