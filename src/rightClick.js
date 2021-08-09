@@ -15,6 +15,13 @@ chrome.windows.onCreated.addListener(() => {
 
 // Listen for when we are clicked 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+	if (info.menuItemId == "see_wall_of_shame") {
+		console.log("see_wall_of_shame clicked")
+		//open new tab with wall of shame url
+		chrome.tabs.create({ url: "https://cyberspace-citizenship-coefficient.github.io/Wall-of-Shame/", active: true });
+		return;
+	}
+
 	// Load the clicked element
 	await chrome.storage.local.get(["htmlElement", "instanceID"], async (storage) => {
 		// Create an infraction
@@ -31,9 +38,30 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' }
 			}
-		)
-			.catch(error => console.log('Error:', error));
-		// Set the icon to warning, it was set to blue in siteQualityMapping when we started reporting the infraction
+		).then(res => {
+			chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+				
+				chrome.storage.local.get(['dont_show_again_preference'], (storage) => {
+					
+					let message_obj = {
+						message: "Thank you for your submission. We will process it and update the wall of shame soon. Click on the wall of shame context menu item later to see the site's new score",
+						dont_show_again_preference: storage.dont_show_again_preference
+					}
+					chrome.tabs.sendMessage(tabs[0].id, message_obj, function (response) {
+						console.log(response.farewell);
+					});
+				})
+			});
+		})
+			.catch(error => {
+				console.log('Error:', error)
+				chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+					chrome.tabs.sendMessage(tabs[0].id, { message: "Failed to post your infraction. Our sysems might be experiencing some technical issues" }, function (response) {
+						console.log(response.farewell);
+					});
+				});
+			});
+
 		await chrome.action.setIcon({
 			path: {
 				"128": 'images/128_CCC_YELLOW.png'
@@ -52,6 +80,12 @@ chrome.runtime.onMessage.addListener((message) => {
 const mapMenus = async () => {
 	// Clear the current setup
 	await chrome.contextMenus.removeAll();
+	chrome.contextMenus.create({
+		title: "See Wall of Shame",
+		type: "normal",
+		id: 'see_wall_of_shame',
+		contexts: ['all']
+	})
 	// Get a list of all the things a user can report
 	await fetch(`${baseURL()}/infraction-types`)
 		.then(response => response.json())

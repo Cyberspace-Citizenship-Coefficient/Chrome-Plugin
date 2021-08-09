@@ -21,3 +21,11 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+
+// Load each part like this 
+try {
+  importScripts('dismisal_preference.js');
+} catch (error) {
+  console.log(error);
+}

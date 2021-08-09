@@ -21,7 +21,8 @@ chrome.runtime.onInstalled.addListener(async () => {
         yellowSites: [],
         greenSites: [],
         whiteListedSites: [], // This is never reset
-        tempAllowedSites: []
+        tempAllowedSites: [], 
+        dont_show_again_preference: false
     });
 });
 

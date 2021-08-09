@@ -5,6 +5,8 @@ chrome.runtime.onStartup.addListener(() => {
 			"128": 'images/128_CCC_GREEN.png'
 		}
 	})
+
+	
 });
 
 // Set the icon to blue when we are sending an infraction to show progress of the report
