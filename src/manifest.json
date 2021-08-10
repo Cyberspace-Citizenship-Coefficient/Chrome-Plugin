@@ -1,0 +1,33 @@
+{
+	"name": "Cyber Citizenship Coefficient",
+	"description": "Build an Chrome Plugin Extension",
+	"version": "1.0",
+	"manifest_version": 3,
+	"background": {
+		"service_worker": "main.js"
+	},
+	"action": {},
+	"icons": {
+		"128": "images/128_CCC_BLUE.png"
+	},
+	"permissions": [
+		"contextMenus",
+		"tabs",
+		"storage",
+		"scripting"
+	],
+	"host_permissions":[
+		"<all_urls>"
+	],
+	"content_scripts": [
+		{
+			"js": [
+				"contentScript.js"
+			],
+			"matches": [
+				"<all_urls>"
+			]
+		}
+	],
+	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoDtd1NOLQVtfw2NjCJaQvfs1vlUdDbGHESPcFu20fBHGOBdJkRRgd70v+cDeuMzR3d0IQW18oc/XnTb8syGx49a8ummj0cly2bvIr3xzxZe9VoF4FuTKGVrLt0Ru+sVKUUSoVBL1/tS3l4wqZ1V/cNlGlSeqbEznxCVJD3QEk8Q926ucEV6/xQt7G/JPAIPZg3GRIPUvbWL/djEh9oV8HTqQ5gHbtzRFRLckMNEbMev3xzBxrJLKfg3eGqV012Sf0eqE4aW6xCheB0mSEZohPMEkWrAWknEb5P08/Z6zhWS9W0rCzWIewzAl9qEl8KwMCLzn/NIUBt4rugitTNDjWwIDAQAB"
+}
